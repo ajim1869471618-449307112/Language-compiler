@@ -6,15 +6,13 @@ ENV PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/build-tools/
 ENV _JAVA_OPTIONS="-Xmx256m"
 
 RUN apt-get update && apt-get install -y \
-    openjdk-17-jdk-headless \
+    openjdk-17-jdk \
     clang \
     llvm \
     mingw-w64 \
     wget \
     unzip \
     zip \
-    zipalign \
-    apksigner \
     && rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p $ANDROID_HOME/cmdline-tools && \
@@ -28,6 +26,8 @@ RUN mkdir -p $ANDROID_HOME/cmdline-tools && \
 RUN wget -q https://github.com/google/bundletool/releases/download/1.15.6/bundletool-all-1.15.6.jar -O /opt/bundletool.jar && \
     echo '#!/bin/bash\njava -jar /opt/bundletool.jar "$@"' > /usr/local/bin/bundletool && \
     chmod +x /usr/local/bin/bundletool
+
+RUN wget -q https://github.com/JesusFreke/smali/releases/download/v2.5.2/smali-2.5.2.jar -O /opt/smali.jar
 
 RUN wget -q https://github.com/indygreg/apple-platform-rs/releases/download/apple-codesign%2F0.22.0/apple-codesign-0.22.0-x86_64-unknown-linux-musl.tar.gz -O rcodesign.tar.gz && \
     tar -xzf rcodesign.tar.gz && \
